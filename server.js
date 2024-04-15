@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const nodemailer = require('nodemailer');
 const fs = require('fs').promises;
+const oemail="leenad178@gmail.com"
 
 const PORT = process.env.PORT || 5000;
 
@@ -44,7 +45,7 @@ app.post('/', async (req, res) => {
 
   const mailOptionsToOwner = {
     from: req.body.email, // Replace with your email
-    to: 'n03544571@gmail.com', // Your email address (business owner)
+    to: oemail, // Your email address (business owner)
     subject: 'New Inquiry Received',
     text: `A new inquiry has been received from:
             Name: ${req.body.name}
@@ -55,7 +56,7 @@ app.post('/', async (req, res) => {
   };
 
   const mailOptionsToClient = {
-    from: 'n03544571@gmail.com', // Replace with your email
+    from: oemail, // Replace with your email
     to: req.body.email, // User's email address (client)
     subject: 'Thank You for Your Inquiry',
     html: emailTemplate // Send the entire email template as HTML content (if available)
