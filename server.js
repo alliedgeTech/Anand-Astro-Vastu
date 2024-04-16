@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const nodemailer = require('nodemailer');
 const fs = require('fs').promises;
-const oemail="leenad178@gmail.com"
+const oemail="anandastrotalk@gmail.com"
 
 const PORT = process.env.PORT || 5000;
 
