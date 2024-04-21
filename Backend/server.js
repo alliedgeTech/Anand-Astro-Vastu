@@ -1,47 +1,38 @@
 const express = require('express');
-const app = express();
 const nodemailer = require('nodemailer');
 const fs = require('fs').promises;
+const cors = require('cors');
+const { emailTemplate } = require('./email');
 const oemail="anandastrotalk@gmail.com"
+require("dotenv").config();
 
 const PORT = process.env.PORT || 5000;
 
+const app = express();
 // Set up Express middleware
-app.use(express.static('public/'));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
-// Read the email.html template (optional for client email)
-const readEmailTemplate = async () => {
-  try {
-    const data = await fs.readFile(__dirname + '/public/email.html', 'utf8');
-    return data;
-  } catch (error) {
-    console.error('Error reading email template:', error);
-    return null;
-  }
-};
 
 // Define routes
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'n03544571@gmail.com', // Replace with your email
+    pass: 'krydprmexkdthpae' // Replace with your password (avoid storing in code)
+  }
 });
 
-app.post('/', async (req, res) => {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'n03544571@gmail.com', // Replace with your email
-      pass: 'krydprmexkdthpae' // Replace with your password (avoid storing in code)
-    }
-  });
+app.get('/', (req, res) => {
+  res.send('Server is up and running');
+});
 
+app.post('/submit', async (req, res) => {
+  console.log("this is got the req");
+  
   // Read the email.html template (optional for client email)
-  let emailTemplate;
-  try {
-    emailTemplate = await readEmailTemplate();
-  } catch (error) {
-    console.error('Email template not found (client email might be affected)');
-  }
 
   const mailOptionsToOwner = {
     from: req.body.email, // Replace with your email
@@ -71,7 +62,8 @@ app.post('/', async (req, res) => {
     await transporter.sendMail(mailOptionsToClient);
     console.log('Email to client sent');
 
-    res.send('success');
+   res.send('success');
+    // res.send('success');
   } catch (error) {
     console.error('Error:', error);
     res.send('error');
