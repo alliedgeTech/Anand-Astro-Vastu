@@ -19,7 +19,7 @@ const note = document.getElementById('note').value;
         note: note
     };
 
-    fetch('http://localhost:3000/submit', {
+    fetch('https://anand-astro-vastu.onrender.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
